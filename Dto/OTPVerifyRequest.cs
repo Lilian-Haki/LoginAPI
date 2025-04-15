@@ -2,8 +2,8 @@
 {
     public class OTPVerifyRequest
     {
-            public string Email { get; set; }
-            public string OtpCode { get; set; }
+            public required string Email { get; set; }
+            public required string OtpCode { get; set; }
 
     }
 }

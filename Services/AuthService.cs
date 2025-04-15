@@ -1,5 +1,7 @@
 ﻿using Login.Dto;
 using Login.Models;
+using Login.Data;
+using Microsoft.EntityFrameworkCore;
 
 namespace Login.Services
 {
@@ -15,6 +17,9 @@ namespace Login.Services
             _emailService = emailService;
             _smsService = smsService;
         }
+
+        //private readonly UserService _userService = userService;
+
 
         public async Task RegisterAsync(RegisterRequest request)
         {
@@ -34,7 +39,7 @@ namespace Login.Services
                 Email = request.Email,
                 PhoneNumber = request.PhoneNumber,
                 Country = request.Country,
-                PasswordHash = BCrypt.Net.BCrypt.HashPassword(request.Password),
+                PasswordHash = request.Password,
                 OtpCode = otp,
                 OtpExpiration = DateTime.UtcNow.AddMinutes(5),
                 IsVerified = false
@@ -44,7 +49,7 @@ namespace Login.Services
             await _context.SaveChangesAsync();
 
             // Deliver OTP based on preference
-            if (request.OtpDeliveryMethod.ToLower() == "sms")
+            if (request.OtpDeliveryMethod.Equals("sms", StringComparison.CurrentCultureIgnoreCase))
             {
                 await _smsService.SendOtpAsync(user.PhoneNumber, otp);
             }
@@ -52,6 +57,16 @@ namespace Login.Services
             {
                 await _emailService.SendOtpAsync(user.Email, otp);
             }
+        }
+
+        internal object Login(LoginRequest request)
+        {
+            throw new NotImplementedException();
+        }
+
+        internal void VerifyOtp(OTPVerifyRequest request)
+        {
+            throw new NotImplementedException();
         }
 
         // OTP verification and login stay the same as before

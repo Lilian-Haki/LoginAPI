@@ -8,7 +8,12 @@ namespace Login.Controllers
     [Route("api/[controller]")]
     public class AuthController : ControllerBase
     {
-        private readonly AuthService _userService = new();
+        private readonly UserService _userService;
+
+        public AuthController(UserService userService)
+        {
+            _userService = userService;
+        }
 
         [HttpPost("register")]
         public async Task<IActionResult> Register([FromBody] RegisterRequest request)
@@ -18,9 +23,9 @@ namespace Login.Controllers
         }
 
         [HttpPost("verify-otp")]
-        public async Task<IActionResult> VerifyOtp([FromBody] VerifyOtpRequest request)
+        public IActionResult VerifyOtp([FromBody] OTPVerifyRequest request)
         {
-            await _userService.VerifyOtpAsync(request);
+            _userService.VerifyOtp(request);
             return Ok("Account verified");
         }
 
@@ -28,7 +33,7 @@ namespace Login.Controllers
         public IActionResult Login([FromBody] LoginRequest request)
         {
             var user = _userService.Login(request);
-            return Ok($"Welcome {user.FirstName}");
+            return Ok(value: $"Welcome");
         }
     }
 

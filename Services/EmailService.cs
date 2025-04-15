@@ -1,4 +1,6 @@
-﻿using System.Net.Mail;
+﻿using SendGrid;
+using SendGrid.Helpers.Mail;
+using System.Net.Mail;
 
 namespace Login.Services
 {

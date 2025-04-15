@@ -1,3 +1,4 @@
+using Login.Data;
 using Login.Interfaces;
 using Login.Services;
 
@@ -8,45 +9,43 @@ builder.Services.AddScoped<EmailService>();
 builder.Services.AddScoped<SmsService>();
 builder.Services.AddScoped<UserService>();
 
-//builder.Services.AddDbContext<ApplicationDbContext>(...);
+builder.Services.AddDbContext<ApplicationDbContext>();
 //builder.Services.AddScoped<IAuthService, AuthService>();
 //builder.Services.AddScoped<IEmailService, EmailService>();
 //builder.Services.AddScoped<ISmsService, SmsService>();
 //builder.Services.AddScoped<IOTPService, OTPService>();
 
 //builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-//    .AddJwtBearer(...);
+   // .AddJwtBearer(...);
 
-builder.Services.AddAuthorization(options =>
-{
-    options.AddPolicy("Permission:EditProducts", policy =>
+builder.Services.AddAuthorizationBuilder()
+                                                                                                                                                                                                                                                                                                                                                                                                          //builder.Services.AddDbContext<ApplicationDbContext>(...);//builder.Services.AddScoped<IAuthService, AuthService>();//builder.Services.AddScoped<IEmailService, EmailService>();//builder.Services.AddScoped<ISmsService, SmsService>();//builder.Services.AddScoped<IOTPService, OTPService>();//builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)//    .AddJwtBearer(...);
+                                                                                                                                                                                                                                                                                                                                                                                                          .AddPolicy("Permission:EditProducts", policy =>
         policy.RequireClaim("permission", "EditProducts"));
-    // More policies...
-});
 
 //builder.Services.AddDbContext<ApplicationDbContext>(options =>
 //    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
-builder.Services.AddAuthentication(options =>
-{
-    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-})
-.AddJwtBearer(options =>
-{
-    options.TokenValidationParameters = new TokenValidationParameters
-    {
-        ValidateIssuer = true,
-        ValidateAudience = true,
-        ValidateLifetime = true,
-        ValidateIssuerSigningKey = true,
-        ValidIssuer = builder.Configuration["Jwt:Issuer"],
-        ValidAudience = builder.Configuration["Jwt:Audience"],
-        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"]))
-    };
-});
+//builder.Services.AddAuthentication(options =>
+//{
+//    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+//    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+//})
+//.AddJwtBearer(options =>
+//{
+//    options.TokenValidationParameters = new TokenValidationParameters
+//    {
+//        ValidateIssuer = true,
+//        ValidateAudience = true,
+//        ValidateLifetime = true,
+//        ValidateIssuerSigningKey = true,
+//        ValidIssuer = builder.Configuration["Jwt:Issuer"],
+//        ValidAudience = builder.Configuration["Jwt:Audience"],
+//        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"]))
+//    };
+//});
 
-builder.Services.AddScoped<JwtService>();
+//builder.Services.AddScoped<JwtService>();
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
